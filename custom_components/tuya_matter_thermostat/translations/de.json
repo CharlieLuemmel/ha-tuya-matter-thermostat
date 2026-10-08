@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya/AVATTO Matter Thermostat Relais",
+        "description": "Zeigt für Tuya-basierte Matter-Thermostate an, ob das Relais gerade schaltet, also ob die Heizung wirklich heizt. Die HA-Matter-Integration liefert diesen Wert nicht, weil er in einem Tuya-eigenen Cluster liegt.\n\n**Geprüft mit:** WT410 Matter (micuda / AVATTO, Matter-Hersteller MIUC).\n\n**So funktioniert es:** Die Integration hört am Matter-Server mit und bekommt Änderungen über das bestehende Matter-Abo sofort, ohne Polling. Für jedes passende Thermostat erscheint automatisch ein Sensor „Heizt“ direkt am Gerät, auch für später eingebundene Thermostate.\n\nDie Adresse ist normalerweise dieselbe wie bei der Matter-Integration.",
+        "data": {
+          "url": "WebSocket-Adresse des Matter-Servers"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Die Integration ist bereits eingerichtet."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "heating": {
+        "name": "Heizt"
+      }
+    }
+  }
+}

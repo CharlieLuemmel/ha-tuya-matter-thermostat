@@ -1,0 +1,5 @@
+{
+  "name": "Tuya/AVATTO Matter Thermostat Relay",
+  "homeassistant": "2026.3.0",
+  "render_readme": true
+}

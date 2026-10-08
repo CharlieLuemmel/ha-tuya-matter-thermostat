@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya/AVATTO Matter Thermostat Relay",
+        "description": "Shows whether the relay of Tuya-based Matter thermostats is switched on, i.e. whether the heating is actually running. The HA Matter integration does not provide this value because it lives in a Tuya manufacturer cluster.\n\n**Tested with:** WT410 Matter (micuda / AVATTO, Matter vendor MIUC).\n\n**How it works:** the integration listens to the Matter Server and receives changes instantly through the existing Matter subscription, no polling. A \"Heating\" sensor is added automatically to every matching thermostat device, including thermostats commissioned later.\n\nThe URL is usually the same as the Matter integration's.",
+        "data": {
+          "url": "Matter Server WebSocket URL"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "The integration is already configured."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "heating": {
+        "name": "Heating"
+      }
+    }
+  }
+}

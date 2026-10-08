@@ -23,11 +23,11 @@
   <a href="#faq">FAQ</a>
 </p>
 
-<!-- Screenshot: device page with the Heating sensor next to the thermostat
 <p align="center">
-  <img src="docs/images/device-page.png" width="700" alt="Device page with Heating sensor">
+  <img src="https://raw.githubusercontent.com/CharlieLuemmel/ha-tuya-matter-thermostat/main/docs/images/device-page.png" width="700" alt="Device page: thermostat control and the Heating sensor (here named &quot;Heizt&quot;) on the same Matter device">
+  <br>
+  <em>The relay sensor sits on the existing Matter device, right below the thermostat.</em>
 </p>
--->
 
 ## Why
 

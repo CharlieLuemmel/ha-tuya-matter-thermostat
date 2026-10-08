@@ -2,46 +2,48 @@
 
 <img src="custom_components/tuya_matter_thermostat/brand/icon.png" width="96" align="right" alt="icon">
 
-Home Assistant custom integration that shows **whether a Tuya-based Matter thermostat is actually heating** – i.e. the state of its relay.
+Home Assistant integration. Shows whether a Tuya-based Matter thermostat is actually heating.
 
-The Home Assistant Matter integration only exposes the standard Thermostat cluster. Many Tuya-based Matter thermostats keep the relay state in a **Tuya manufacturer cluster** (`0x125DFC41`), which Home Assistant ignores. This integration picks that value up and adds a binary sensor **"Heating"** to the existing Matter device.
+The Matter integration only exposes the standard Thermostat cluster. Tuya keeps the relay state in its own manufacturer cluster (`0x125DFC41`). Home Assistant ignores it. This integration reads it and adds a binary sensor **Heating** to the existing Matter device.
 
-- **Instant, no polling:** the thermostat reports the relay through the regular Matter subscription; this integration listens to the Matter Server WebSocket (`start_listening`).
-- **Automatic:** every supported thermostat gets its sensor, including thermostats commissioned later.
-- **Attached to the existing device:** no extra devices, the sensor appears next to the climate entity.
+## Features
+
+- Push, no polling. Uses the existing Matter subscription.
+- Attaches to the existing Matter device. No extra devices.
+- Picks up new thermostats automatically.
+- One setting: the Matter Server URL. Defaults to the Matter integration's URL.
 
 ## Supported devices
 
 | Device | Matter vendor / product ID | Status |
 |---|---|---|
-| WT410 Matter (sold as **micuda** / **AVATTO** WT410, Matter vendor **MIUC**) | 5461 / 2416 | ✅ tested |
+| WT410 Matter (micuda / AVATTO, Matter vendor MIUC) | 5461 / 2416 | Tested |
 
-Other Tuya-based Matter thermostats may use the same attribute. Only devices listed in `SUPPORTED_DEVICES` (`const.py`) are handled, because other Tuya devices may use attribute 1 of that cluster for something else. Have a different model? See [Adding a device](#adding-a-device).
+micuda and AVATTO are retail brands. The device reports MIUC as vendor. It runs on Tuya's platform (module and firmware), hence the Tuya cluster (`0x125D` = Tuya vendor prefix).
 
-> **Who is who?** micuda and AVATTO are retail brands. Over Matter the device identifies as MIUC. Under the hood it runs on Tuya's platform (Wi-Fi module and firmware), hence the Tuya manufacturer cluster (`0x125D` is Tuya's vendor prefix).
+We only handle devices listed in `SUPPORTED_DEVICES` (`const.py`). Other Tuya devices may use the same attribute for something else.
 
 ## Requirements
 
-- Home Assistant **2026.3** or newer
-- Matter integration with the Matter Server app (tested with the matter.js based Matter Server)
-- The thermostat commissioned into Home Assistant via Matter
+- Home Assistant 2026.3 or newer
+- Matter integration with the Matter Server app
+- Thermostat commissioned to Home Assistant via Matter
 
 ## Installation
 
-### HACS (custom repository)
+### HACS
 
-1. HACS → ⋮ → **Custom repositories**
-2. Repository: `https://github.com/CharlieLuemmel/ha-tuya-matter-thermostat`, type **Integration**
-3. Install **Tuya/AVATTO Matter Thermostat Relay**, restart Home Assistant
-4. Settings → Devices & services → **Add integration** → *Tuya/AVATTO Matter Thermostat Relay*
+1. Open HACS → ⋮ → **Custom repositories**.
+2. Add `https://github.com/CharlieLuemmel/ha-tuya-matter-thermostat`, type **Integration**.
+3. Install **Tuya/AVATTO Matter Thermostat Relay**.
+4. Restart Home Assistant.
+5. Go to Settings → Devices & services → **Add integration** → *Tuya/AVATTO Matter Thermostat Relay*.
 
 ### Manual
 
-Copy `custom_components/tuya_matter_thermostat` to `/config/custom_components/`, restart Home Assistant and add the integration as above.
-
-## Configuration
-
-The only setting is the Matter Server WebSocket URL. It defaults to the URL of your Matter integration (usually `ws://localhost:5580/ws`).
+1. Copy `custom_components/tuya_matter_thermostat` to `/config/custom_components/`.
+2. Restart Home Assistant.
+3. Add the integration as above.
 
 ## How it works
 
@@ -50,23 +52,25 @@ Thermostat ──(Matter subscription)──► Matter Server ──► HA Matte
                                             └──────────► this integration ──► binary_sensor.<device>_heating
 ```
 
-| Attribute | Path | Meaning |
+| Attribute | Path | Value |
 |---|---|---|
-| Relay | `1/308149313/1` | `1` = relay on (heating), `0` = off |
+| Relay | `1/308149313/1` | `1` = on (heating), `0` = off |
 
-308149313 = `0x125DFC41`. Verified by toggling the setpoint and listening for the relay click; reports arrive instantly via the subscription (the device itself switches a few seconds after a setpoint change).
+The integration connects to the Matter Server WebSocket and calls `start_listening`. It reads initial values from the node list and updates on `attribute_updated`.
 
-## Adding a device
+The device switches a few seconds after a setpoint change. The sensor follows the relay, not the setpoint.
 
-1. Find vendor and product ID: Matter integration → device → *Download diagnostics*, attributes `0/40/2` (vendor ID) and `0/40/4` (product ID).
-2. Check whether attribute `1/308149313/1` exists and changes when the relay clicks.
-3. Open an issue or PR with the IDs and model name.
+## Add a device
 
-## Notes and limitations
+1. Download diagnostics: Matter integration → device → *Download diagnostics*.
+2. Note vendor ID `0/40/2` and product ID `0/40/4`.
+3. Check that `1/308149313/1` exists and changes when the relay clicks.
+4. Open an issue or PR with model name and IDs.
 
-- Unofficial. Relies on the Matter Server WebSocket message format (`start_listening`, `attribute_updated`). If a Matter Server update changes it, the sensors become unavailable.
-- Only the relay is exposed. The other attributes in the Tuya cluster are undocumented.
-- If you use [Better Thermostat](https://better-thermostat.org/): it controls the device via the setpoint, so "heating, idle" on the device is normal – this sensor shows when the relay actually switches.
+## Limitations
+
+- Unofficial. Depends on the Matter Server WebSocket format (`start_listening`, `attribute_updated`). If that changes, the sensor goes unavailable.
+- Exposes the relay only. The other Tuya attributes are undocumented.
 
 ## License
 

@@ -20,7 +20,8 @@
   <a href="#installation">Installation</a> ·
   <a href="#supported-devices">Supported devices</a> ·
   <a href="#how-it-works">How it works</a> ·
-  <a href="#faq">FAQ</a>
+  <a href="#faq">FAQ</a> ·
+  <a href="#discussion--feedback">Discussion</a>
 </p>
 
 <p align="center">
@@ -200,6 +201,15 @@ Or use **Enable debug logging** on the integration page.
 - **Unofficial.** Depends on the Matter Server WebSocket format (`start_listening`, `attribute_updated`). If a Matter Server update changes it, the sensor becomes unavailable.
 - **Relay only.** The other attributes in the Tuya cluster are undocumented.
 - **HACS store icon.** HACS shows "icon not available" in its list. Home Assistant itself shows the icon (shipped in `brand/`).
+
+## Discussion & feedback
+
+Questions, ideas, experiences? Join the thread in the German-speaking simon42 community (English replies welcome):
+
+- 💬 [Integration announcement & discussion](https://community.simon42.com/t/heizt-sie-oder-heizt-sie-nicht-relais-status-fuer-tuya-avatto-matter-thermostate-integration-hacs/93779)
+- 🛠️ [Guide: Matter devices in a different VLAN than Home Assistant (pfSense, Avahi, IPv6)](https://community.simon42.com/t/matter-geraete-in-einem-anderen-vlan-als-home-assistant-so-klappts-mit-pfsense-avahi-ipv6-firewall/93781)
+
+Bugs and device reports go to [GitHub issues](https://github.com/CharlieLuemmel/ha-tuya-matter-thermostat/issues).
 
 ## Contributing
 

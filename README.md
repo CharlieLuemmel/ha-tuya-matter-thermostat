@@ -1,6 +1,6 @@
 # Tuya/AVATTO Matter Thermostat Relay
 
-<img src="custom_components/tuya_matter_thermostat/brand/icon.png" width="96" align="right" alt="icon">
+<img src="https://raw.githubusercontent.com/CharlieLuemmel/ha-tuya-matter-thermostat/main/custom_components/tuya_matter_thermostat/brand/icon.png" width="96" align="right" alt="icon">
 
 Home Assistant integration. Shows whether a Tuya-based Matter thermostat is actually heating.
 
